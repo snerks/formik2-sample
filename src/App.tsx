@@ -39,6 +39,13 @@ const MyRadio: React.FC<MyRadioProps> = (props) => {
   return <FormControlLabel {...field} control={<Radio />} label={label} />;
 };
 
+const MyCheckbox: React.FC<MyRadioProps> = (props) => {
+  const { label, ...otherProps } = props;
+  const [field] = useField<{}>(otherProps);
+
+  return <FormControlLabel {...field} control={<Checkbox />} label={label} />;
+};
+
 const MyTextField: React.FC<FieldAttributes<{}>> = ({
   placeholder,
   ...props
@@ -85,8 +92,7 @@ const App: React.FC = () => {
             <Header isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
           </Grid>
           <Grid item container>
-            <Grid item xs={false} sm={1} />
-            <Grid item xs={12} sm={10}>
+            <Grid item>
               <div style={{ margin: 30 }}>
                 <Formik
                   initialValues={{
@@ -98,15 +104,6 @@ const App: React.FC = () => {
                     pets: [{ type: "cat", name: "jarvis", id: Math.random() }],
                   }}
                   validationSchema={validationSchema}
-                  // validate={(values) => {
-                  //   const errors: Record<string, string> = {};
-
-                  //   if (values.firstName.includes("bob")) {
-                  //     errors.firstName = "No bob";
-                  //   }
-
-                  //   return errors;
-                  // }}
                   onSubmit={(data, { setSubmitting, resetForm }) => {
                     setSubmitting(true);
 
@@ -124,162 +121,190 @@ const App: React.FC = () => {
                     handleBlur,
                     handleSubmit,
                   }) => (
-                    // <form onSubmit={handleSubmit}></form>
-                    <Form>
-                      {/* <TextField
-              name="firstName"
-              value={values.firstName}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            /> */}
-                      {/* <div>
-              <TextField
-                name="lastName"
-                value={values.lastName}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </div> */}
-                      {/* <Field
-              placeholder="first name"
-              name="firstName"
-              type="input"
-              as={TextField}
-            /> */}
-                      <MyTextField
-                        placeholder="first name"
-                        name="firstName"
-                        type="input"
-                      />
-                      <div>
-                        {/* <Field
-                placeholder="last name"
-                name="lastName"
-                type="input"
-                as={TextField}
-              /> */}
-                        <MyTextField
-                          placeholder="last name"
-                          name="lastName"
-                          type="input"
-                        />
-                      </div>
-                      <Field name="isTall" type="checkbox" as={Checkbox} />
-
-                      <div>cookies:</div>
-
-                      <Field
-                        name="cookies"
-                        value="chocolate chip"
-                        type="checkbox"
-                        as={Checkbox}
-                      />
-                      <Field
-                        name="cookies"
-                        value="snickerdoodle"
-                        type="checkbox"
-                        as={Checkbox}
-                      />
-                      <Field
-                        name="cookies"
-                        value="sugar"
-                        type="checkbox"
-                        as={Checkbox}
-                      />
-
-                      <div>yoghurt:</div>
-                      {/* <Field name="yoghurt" value="peach" type="radio" as={Radio} />
-            <Field name="yoghurt" value="blueberry" type="radio" as={Radio} />
-            <Field name="yoghurt" value="apple" type="radio" as={Radio} /> */}
-
-                      <MyRadio
-                        name="yoghurt"
-                        type="radio"
-                        value="peach"
-                        label="peach"
-                      />
-                      <MyRadio
-                        name="yoghurt"
-                        type="radio"
-                        value="blueberry"
-                        label="blueberry"
-                      />
-                      <MyRadio
-                        name="yoghurt"
-                        type="radio"
-                        value="apple"
-                        label="apple"
-                      />
-
-                      <FieldArray name="pets">
-                        {(arrayHelpers) => (
+                    <Grid container>
+                      <Grid item xs={12} md={8}>
+                        <Form>
+                          <MyTextField
+                            placeholder="first name"
+                            name="firstName"
+                            type="input"
+                          />
                           <div>
-                            <Button
-                              onClick={() =>
-                                arrayHelpers.push({
-                                  type: "frog",
-                                  name: "",
-                                  id: "" + Math.random(),
-                                })
-                              }
-                              variant="outlined"
-                              color="secondary"
-                              size="small"
-                            >
-                              add pet
-                            </Button>
-                            {values.pets.map((pet, index) => {
-                              const name = `pets.${index}.name`;
-
-                              return (
-                                <div key={pet.id}>
-                                  <MyTextField
-                                    placeholder="pet name"
-                                    name={name}
-                                  />
-
-                                  <Field
-                                    name={`pets.${index}.type`}
-                                    type="select"
-                                    as={Select}
-                                  >
-                                    <MenuItem value="cat">cat</MenuItem>
-                                    <MenuItem value="dog">dog</MenuItem>
-                                    <MenuItem value="frog">frog</MenuItem>
-                                  </Field>
-                                  <Button
-                                    onClick={() => arrayHelpers.remove(index)}
-                                    variant="outlined"
-                                    color="secondary"
-                                    size="small"
-                                  >
-                                    x
-                                  </Button>
-                                </div>
-                              );
-                            })}
+                            <MyTextField
+                              placeholder="last name"
+                              name="lastName"
+                              type="input"
+                            />
                           </div>
-                        )}
-                      </FieldArray>
+                          {/* <Field name="isTall" type="checkbox" as={Checkbox} /> */}
+                          <MyCheckbox
+                            name="isTall"
+                            type="checkbox"
+                            label="Is Tall?"
+                          />
 
-                      <div style={{ paddingTop: 30 }}>
-                        <Button
-                          disabled={isSubmitting}
-                          type="submit"
-                          variant="contained"
-                          color="primary"
-                        >
-                          submit
-                        </Button>
-                      </div>
-                      <pre>{JSON.stringify(values, null, 2)}</pre>
-                      <pre>{JSON.stringify(errors, null, 2)}</pre>
-                    </Form>
+                          <div>cookies:</div>
+
+                          {/* <Field
+                            name="cookies"
+                            value="chocolate chip"
+                            type="checkbox"
+                            as={Checkbox}
+                          />
+                          <Field
+                            name="cookies"
+                            value="snickerdoodle"
+                            type="checkbox"
+                            as={Checkbox}
+                          />
+                          <Field
+                            name="cookies"
+                            value="sugar"
+                            type="checkbox"
+                            as={Checkbox}
+                          /> */}
+
+                          <MyCheckbox
+                            name="cookies"
+                            type="checkbox"
+                            label="Chocolate Chip"
+                            value="chocolate chip"
+                          />
+
+                          <MyCheckbox
+                            name="cookies"
+                            type="checkbox"
+                            label="Snickerdoodle"
+                            value="snickerdoodle"
+                          />
+                          <MyCheckbox
+                            name="cookies"
+                            type="checkbox"
+                            label="Sugar"
+                            value="sugar"
+                          />
+                          <div>yoghurt:</div>
+
+                          <MyRadio
+                            name="yoghurt"
+                            type="radio"
+                            value="peach"
+                            label="peach"
+                          />
+                          <MyRadio
+                            name="yoghurt"
+                            type="radio"
+                            value="blueberry"
+                            label="blueberry"
+                          />
+                          <MyRadio
+                            name="yoghurt"
+                            type="radio"
+                            value="apple"
+                            label="apple"
+                          />
+
+                          <Grid container direction="column">
+                            <Grid item>Pets</Grid>
+                            <Grid item container>
+                              <Grid item>
+                                <FieldArray name="pets">
+                                  {(arrayHelpers) => (
+                                    <div>
+                                      <Button
+                                        onClick={() =>
+                                          arrayHelpers.push({
+                                            type: "frog",
+                                            name: "",
+                                            id: "" + Math.random(),
+                                          })
+                                        }
+                                        variant="outlined"
+                                        color="secondary"
+                                        size="small"
+                                      >
+                                        add pet
+                                      </Button>
+
+                                      <Grid container>
+                                        {values.pets.map((pet, index) => {
+                                          const name = `pets.${index}.name`;
+
+                                          return (
+                                            <Grid item container key={pet.id}>
+                                              <Grid item>
+                                                <MyTextField
+                                                  placeholder="pet name"
+                                                  name={name}
+                                                />
+                                              </Grid>
+
+                                              <Grid item>
+                                                <Field
+                                                  name={`pets.${index}.type`}
+                                                  type="select"
+                                                  as={Select}
+                                                >
+                                                  <MenuItem value="cat">
+                                                    cat
+                                                  </MenuItem>
+                                                  <MenuItem value="dog">
+                                                    dog
+                                                  </MenuItem>
+                                                  <MenuItem value="frog">
+                                                    frog
+                                                  </MenuItem>
+                                                </Field>
+                                              </Grid>
+                                              <Grid item>
+                                                <Button
+                                                  onClick={() =>
+                                                    arrayHelpers.remove(index)
+                                                  }
+                                                  variant="outlined"
+                                                  color="secondary"
+                                                  size="small"
+                                                >
+                                                  x
+                                                </Button>
+                                              </Grid>
+                                            </Grid>
+                                          );
+                                        })}
+                                      </Grid>
+                                    </div>
+                                  )}
+                                </FieldArray>
+                              </Grid>
+                            </Grid>
+                            <Grid item>
+                              <div style={{ paddingTop: 30 }}>
+                                <Button
+                                  disabled={isSubmitting}
+                                  type="submit"
+                                  variant="contained"
+                                  color="primary"
+                                >
+                                  submit
+                                </Button>
+                              </div>
+                            </Grid>
+                          </Grid>
+                        </Form>
+                      </Grid>
+                      <Grid item xs={12} md={4} container direction="row">
+                        <Grid item>
+                          <pre>{JSON.stringify(values, null, 2)}</pre>
+                        </Grid>
+                        <Grid item>
+                          <pre>{JSON.stringify(errors, null, 2)}</pre>
+                        </Grid>
+                      </Grid>
+                    </Grid>
                   )}
                 </Formik>
               </div>
             </Grid>
-            <Grid item xs={false} sm={1} />
           </Grid>
         </Grid>
       </Paper>

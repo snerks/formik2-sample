@@ -21,8 +21,16 @@ import * as yup from "yup";
 
 type MyRadioProps = { label: string } & FieldAttributes<{}>;
 
-const MyRadio: React.FC<MyRadioProps> = ({ label, ...props }) => {
-  const [field] = useField<{}>(props);
+// Does not work in pre-Chromium MS Edge
+// const MyRadio: React.FC<MyRadioProps> = ({ label, ...props }) => {
+//   const [field] = useField<{}>(props);
+
+//   return <FormControlLabel {...field} control={<Radio />} label={label} />;
+// };
+
+const MyRadio: React.FC<MyRadioProps> = (props) => {
+  const { label, ...otherProps } = props;
+  const [field] = useField<{}>(otherProps);
 
   return <FormControlLabel {...field} control={<Radio />} label={label} />;
 };

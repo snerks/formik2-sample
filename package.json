@@ -49,6 +49,5 @@
   },
   "devDependencies": {
     "@types/yup": "^0.28.0"
-  },
-  "homepage": "https://snerks.github.io/formik2-sample"
+  }
 }
